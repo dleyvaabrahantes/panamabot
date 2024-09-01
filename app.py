@@ -14,7 +14,7 @@ telegram_url = f'https://api.telegram.org/bot{token}/sendMessage'
 url_to_monitor = 'https://visas.migracion.gob.pa/SIVA/verif_citas/'
 
 # Variable para almacenar el contenido anterior
-previous_content = "Dummy"
+previous_content = None
 
 def send_telegram_message(message):
     payload = {
