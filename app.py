@@ -30,16 +30,22 @@ def send_telegram_message(message):
 while True:
     try:
         # Realizar la solicitud a la URL sin verificar SSL
+        print("Realizando la solicitud a la URL...")
         response = requests.get(url_to_monitor, verify=False)
+        print(f'Status code de la respuesta: {response.status_code}')
+        
         if response.status_code == 200:
             current_content = response.text
-            
+            print('Contenido actual (primeros 100 caracteres):', current_content[:100])
+
             # Comparar con el contenido anterior
-            if previous_content is not None and current_content != previous_content:
-                # Si hay un cambio, enviar la notificación por Telegram
-                for _ in range(5):  # Enviar el mensaje 5 veces
-                    send_telegram_message('¡Cambio detectado en la URL monitoreada!')
-                    time.sleep(2)  # Esperar 2 segundos entre mensajes
+            if previous_content is not None:
+                print('Comparando el contenido...')
+                if current_content != previous_content:
+                    print('Cambio detectado. Enviando notificaciones...')
+                    for _ in range(5):  # Enviar el mensaje 5 veces
+                        send_telegram_message('¡Cambio detectado en la URL monitoreada!')
+                        time.sleep(2)  # Esperar 2 segundos entre mensajes
 
             # Actualizar el contenido anterior
             previous_content = current_content
@@ -50,4 +56,5 @@ while True:
         print(f'Error durante la solicitud: {e}')
     
     # Esperar un minuto antes de la siguiente revisión
+    print("Esperando un minuto antes de la siguiente revisión...")
     time.sleep(60)
